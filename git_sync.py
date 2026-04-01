@@ -6,7 +6,7 @@ from interaction import prompt_decision_menu
 
 TARGET_REPOS = [
     os.path.expanduser("~/workspace/HNXJ/hnxj-gemini"),
-    os.path.expanduser("~/workspace/misc/Warehouse/Repositories/mllm"),
+    os.path.expanduser("~/workspace/Warehouse/Repositories/mllm"),
     os.path.expanduser("~/workspace/Computational/eye")
 ]
 

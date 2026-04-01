@@ -21,24 +21,26 @@ To improve user interaction and ensure deterministic responses, the CLI employs 
 *   **Tool:** This functionality is managed by the `user_decision_router` skill, implemented via the `prompt_decision_menu` function in `~/workspace/Computational/cli_tools/interaction.py`.
 *   **Behavior:** The CLI pauses execution, displays a concise summary (often an error message), and waits for a precise integer selection or custom input.
 
-## The GAMMA Protocol
+## Local LLM Proxy Bridge (/toggle-local)
 
-The GAMMA protocol (`Guide And Model Mapped Actions`) is the standard format for providing the Gemini CLI with complex engineering instructions.
+The CLI can be toggled between "Cloud Mode" (Gemini API) and "Local Mode" (Offline via LiteLLM) to support local development and privacy-focused workflows.
 
-*   **Specification:** GAMMA documents define a problem, propose a solution architecture, outline skills/tools, detail version control steps, and list rules/cautions.
-*   **Purpose:** It ensures instructions are atomic, scope-preserving, and executable through the CLI's toolset, facilitating robust and repeatable task execution.
+*   **Logic:**
+    *   **Intercept:** Standard Gemini API calls are redirected to `localhost:4000`.
+    *   **Proxy:** LiteLLM serves as the bridge, translating Gemini requests into the format required by LM Studio (`openai` compatible).
+    *   **Configuration:** Managed via `~/workspace/Warehouse/Repositories/mllm/proxy/litellm_config.yaml`.
+*   **Behavior:**
+    *   **Command:** `/toggle-local` invokes the mode selector.
+    *   **Port Management:** Automatically checks for and offers to clear zombie processes on ports 4000 (LiteLLM) and 1234 (LM Studio).
+    *   **Warnings:** Warns the user of potential tool-calling (MCP) degradation and mathematical hallucinations in local-only mode.
+*   **Dependencies:** Requires `litellm` and a tool-capable local model (e.g., `qwen2.5-coder-7b-instruct`) loaded in LM Studio.
 
 ## Active Tool Registry
 
-This section lists the core skills and tools that are implemented and verified within the Gemini CLI.
+...
+7.  **`CLI_router`**: Manages command interception (like `/meditate` and `/toggle-local`) and tool orchestration within the `cli_tools` module.
+8.  **`toggle_local_mode` (/toggle-local)**: Implemented in `~/workspace/Computational/cli_tools/local_toggle.py`. Manages the LiteLLM proxy and environment overrides for offline operation.
 
-1.  **`mlx_lms_vlm_local`**: Initializes the LM Studio server (Port 4474) and loads VLM models (`qwen3.5-vl` with TTL). This is handled via `lms` CLI commands.
-2.  **`mlx_lms_eye_local`**: Orchestrates image analysis via `qwen_subagent.py` and `core.py`, including Base64 encoding and fetching descriptions from LM Studio. Image optimization is a planned feature.
-3.  **`mlx_lms_view`**: A placeholder tool for analyzing visual output and generating code patches. Implementation details are pending.
-4.  **`optimize_asset_tool`**: A placeholder tool for optimizing images and stripping bloat from HTML/SVG files. Implementation details are pending.
-5.  **`context_audit_extractor` (/meditate)**: Implemented via `execute_meditation` and `auto_register_skills` in `~/workspace/Computational/cli_tools/CLI_router.py`. It autonomously extracts and registers new skills from the chat context into the `active_skills/` directory.
-6.  **`user_decision_router`**: Implemented via `prompt_decision_menu` in `~/workspace/Computational/cli_tools/interaction.py`, providing structured interactive menus for user input.
-7.  **`CLI_router`**: Manages command interception (like `/meditate`) and tool orchestration within the `cli_tools` module.
 
 ---
 
