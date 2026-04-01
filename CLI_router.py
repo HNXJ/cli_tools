@@ -83,6 +83,25 @@ def execute_meditation(current_messages_array, gemini_client):
         print(f"Meditation failed: {e}")
         return f"Meditation failed: {e}"
 
+def handle_network_failure(prompt, state):
+    """
+    Called by the main loop when the primary Gemini API is unreachable.
+    Reroutes the prompt to the native MLX-LM engine.
+    """
+    from infrastructure.mlx_offline_router import call_native_mlx_fallback
+    from memory_and_logic.context_compressor import compress_cli_context
+    
+    print("\n[GAMMA] Detected Gemini API connection failure.")
+    print("Initiating Autonomous Local Fallback using M3 Max MLX engine...")
+    
+    # 1. Compress context
+    system_context = compress_cli_context()
+    
+    # 2. Reroute payload
+    response = call_native_mlx_fallback(prompt, system_context)
+    
+    return response
+
 def handle_input(user_input, state):
     if user_input.strip() == "/meditate":
         # Extract messages from state
@@ -90,6 +109,13 @@ def handle_input(user_input, state):
         client = state.get("client")
         return execute_meditation(messages, client)
     
+    if user_input.strip() == "/offline":
+        from infrastructure.mlx_offline_router import call_native_mlx_fallback
+        from memory_and_logic.context_compressor import compress_cli_context
+        ctx = compress_cli_context()
+        print("\n[GAMMA] Manually Triggering Local MLX Fallback...")
+        return call_native_mlx_fallback("Tell me your current status and project context.", ctx)
+
     if user_input.strip() == "/toggle-local":
         from local_toggle import toggle_local_mode
         return toggle_local_mode()
