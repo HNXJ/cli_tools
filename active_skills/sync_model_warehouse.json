@@ -1,0 +1,10 @@
+{
+  "name": "sync_model_warehouse",
+  "description": "Standardizes global storage for local AI models. Use this to 'clean up models', 'migrate models', or 'fix disk space'. It enforces LM Studio and HuggingFace models to use a centralized directory.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "args": {"type": "object"}
+    }
+  }
+}
