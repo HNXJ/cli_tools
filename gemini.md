@@ -11,7 +11,7 @@ The "Eye" subsystem is designed for local multimodal processing and command-line
     *   `core.py`: Contains VLM interaction logic, including image encoding, querying LM Studio API, and model loading/unloading with TTL.
     *   LM Studio (`lms` CLI): Used for starting the VLM server and managing models.
 *   **Data Flow:** Images are optimized (downsampled if large), encoded to Base64, and sent to the LM Studio API for analysis. Results are processed and returned to the user.
-*   **Guardrails:** Local-first processing ensures data privacy. Models are loaded with a 10-minute TTL to manage memory.
+*   **Guardrails:** Local-first processing ensures data privacy. Models are loaded with a 15-minute TTL to manage memory.
 
 ## Interactive Menus (User Decision Router)
 
@@ -36,8 +36,9 @@ This section lists the core skills and tools that are implemented and verified w
 2.  **`mlx_lms_eye_local`**: Orchestrates image analysis via `qwen_subagent.py` and `core.py`, including Base64 encoding and fetching descriptions from LM Studio. Image optimization is a planned feature.
 3.  **`mlx_lms_view`**: A placeholder tool for analyzing visual output and generating code patches. Implementation details are pending.
 4.  **`optimize_asset_tool`**: A placeholder tool for optimizing images and stripping bloat from HTML/SVG files. Implementation details are pending.
-5.  **`context_audit_extractor`**: A placeholder tool for scanning chat context to extract and save undocumented Python functions. Implementation details are pending.
+5.  **`context_audit_extractor` (/meditate)**: Implemented via `execute_meditation` and `auto_register_skills` in `~/workspace/Computational/cli_tools/CLI_router.py`. It autonomously extracts and registers new skills from the chat context into the `active_skills/` directory.
 6.  **`user_decision_router`**: Implemented via `prompt_decision_menu` in `~/workspace/Computational/cli_tools/interaction.py`, providing structured interactive menus for user input.
+7.  **`CLI_router`**: Manages command interception (like `/meditate`) and tool orchestration within the `cli_tools` module.
 
 ---
 
@@ -46,3 +47,18 @@ This section lists the core skills and tools that are implemented and verified w
 *   **Non-Destructive Generation:** Avoid overwriting working Python logic without careful reading.
 *   **Enforce Interaction Rules:** Use `user_decision_router` for all user decisions, avoiding conversational filler.
 *   **Documentation Clarity:** `gemini.md` is the long-term memory; ensure it is structured, readable, and accurate.
+
+
+### 🛡️ Last Synchronized: 2026-04-01 14:59:41
+- hnxj-gemini: f6a55e9
+- eye: 8297c71
+: 8297c71
+
+
+### 🛡️ Last Synchronized: 2026-04-01 15:03:20
+- hnxj-gemini: f6a55e9
+
+
+### 🛡️ Last Synchronized: 2026-04-01 15:05:16
+- hnxj-gemini: f6a55e9
+- eye: eea5c19
