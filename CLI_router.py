@@ -83,11 +83,15 @@ def execute_meditation(current_messages_array, gemini_client):
         print(f"Meditation failed: {e}")
         return f"Meditation failed: {e}"
 
-# Placeholder for the main loop interceptor
 def handle_input(user_input, state):
     if user_input.strip() == "/meditate":
         # Extract messages from state
         messages = state.get("messages", [])
         client = state.get("client")
         return execute_meditation(messages, client)
+    
+    if user_input.strip() == "/toggle-local":
+        from local_toggle import toggle_local_mode
+        return toggle_local_mode()
+        
     return None
