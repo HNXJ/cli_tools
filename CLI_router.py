@@ -93,5 +93,9 @@ def handle_input(user_input, state):
     if user_input.strip() == "/toggle-local":
         from local_toggle import toggle_local_mode
         return toggle_local_mode()
+
+    if user_input.strip() == "/optimize-memory":
+        from memory_manager import optimize_memory
+        return optimize_memory()
         
     return None

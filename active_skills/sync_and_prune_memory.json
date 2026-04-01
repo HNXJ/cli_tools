@@ -1,0 +1,10 @@
+{
+  "name": "sync_and_prune_memory",
+  "description": "Enforces a hierarchical schema on the CLI's long-term memory (GEMINI.md). It consolidates active objectives and moves stale items to cold storage (VMEMORY.md) to prevent token bloat.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "args": {"type": "object"}
+    }
+  }
+}
